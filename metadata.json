@@ -1,0 +1,6 @@
+{
+  "name": "Drop7 Reborn",
+  "description": "Authentic, ad-free recreation of the classic Drop7 numerical puzzle game with customizable RGB palette, music selection, and complete game modes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

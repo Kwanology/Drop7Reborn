@@ -1,9 +1,62 @@
-# Drop7Reborn
-Clone of the original Drop 7 game for learning to vibe code.
-This was programmed with Google Studio AI. The original Drop 7 game was discontinued because the original code was not compatible with newer phones.
-I have taken the time to remake this in an exercise using Google Studio AI as the programmer.
-Instead of copy-pasting the code, I described the whole game including animations to the AI and this code was built. Sounds are from the original Drop 7 apk.
-Drop 7 is not my IP and I have no copyright over the game or any of the assets.
-This was built because I wanted to play the game again and it was not possible until I remade it myself.
-Not created to create revenue or scrape user data, just to play the game only. Please don't use this to make scrapers or viruses.
-Have a nice day.
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
+
+# Drop 7 Reborn 🔴🟢🔵
+
+An authentic, ad-free recreation of the classic numerical puzzle game Drop7 with custom color palette, soundtrack selector, and all classic game modes (Normal, Hardcore, Sequence). Optimized for Android and modern devices (e.g., Samsung Galaxy S26+).
+
+---
+
+## 🚀 Running Locally (Web)
+
+**Prerequisites:** Node.js (v18+)
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Start development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 📱 Building the Android APK
+
+The project is packaged with Capacitor and built with Android Gradle.
+
+### One-Click Build:
+Run either of the following commands in the project root:
+
+```bash
+npm run build:apk
+```
+*or directly execute:*
+```cmd
+build-apk.bat
+```
+*(PowerShell users can also run `./build-apk.ps1`)*
+
+The script will:
+1. Compile the web assets (`npm run build`)
+2. Sync assets with native Android wrapper (`npx cap sync android`)
+3. Compile the Android APK via Gradle (`gradlew assembleDebug`)
+4. Copy the output APK directly to `Drop7Reborn.apk` in the project root.
+
+### Generated APK Locations:
+- **Root Directory:** `Drop7Reborn.apk`
+- **Gradle Output:** `android/app/build/outputs/apk/debug/app-debug.apk`
+
+---
+
+## 🛠️ Project Structure
+
+- `src/`: Game logic, audio engine, board storage, React components
+- `public/`: Audio sound effects, soundtracks, icons
+- `android/`: Native Android project configured with Capacitor
+- `build-apk.bat` / `build-apk.ps1`: Automated APK build scripts
+
