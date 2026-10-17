@@ -1,0 +1,216 @@
+@import "tailwindcss";
+
+@layer base {
+  html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+}
+
+/* Custom fade-in and scale animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Bursting Disc Animation:
+   - Phase 1 (0% -> 34%): Disc expands for a moment while remaining strictly OPAQUE.
+   - Phase 2 (35% -> 100%): Sparkles erupt from inside, and disc continues expanding outward while fading to clear.
+*/
+@keyframes burstExpandFade {
+  0% {
+    transform: scale(1) translate(0, 0) rotate(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  16% {
+    /* Expands and rolls to the right tethered from center bottom like a balloon */
+    transform: scale(1.15) translate(2.5px, -2px) rotate(4deg);
+    opacity: 1;
+    filter: brightness(1.15);
+  }
+  30% {
+    /* Rolls to the left */
+    transform: scale(1.24) translate(-2.5px, -4px) rotate(-4deg);
+    opacity: 1;
+    filter: brightness(1.28);
+  }
+  36% {
+    /* Peak of swelling: upright before bursting */
+    transform: scale(1.28) translate(0, -5px) rotate(0deg);
+    opacity: 1;
+    filter: brightness(1.38);
+  }
+  68% {
+    /* Continues expanding outward while fading */
+    transform: scale(1.60) translate(0, -6px) rotate(0deg);
+    opacity: 0.48;
+    filter: brightness(1.58);
+  }
+  100% {
+    /* Fully expanded and faded to transparent */
+    transform: scale(1.98) translate(0, -8px) rotate(0deg);
+    opacity: 0;
+    filter: brightness(1.85);
+  }
+}
+
+.animate-burst-disc {
+  animation: burstExpandFade 0.48s cubic-bezier(0.18, 0.85, 0.25, 1) forwards;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+
+/* Radiant Sparkles expanding from the inside of the bursting circle */
+@keyframes sparkleRadiate {
+  0% {
+    transform: translate(0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  32% {
+    /* Hidden while disc is swelling in opaque phase */
+    transform: translate(0, 0) scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  36% {
+    /* Pop moment: sparkles emerge instantly from the center */
+    transform: translate(calc(var(--tx, 0px) * 0.25), calc(var(--ty, 0px) * 0.25)) scale(1.6) rotate(18deg);
+    opacity: 1;
+  }
+  72% {
+    /* Radiating outward */
+    transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(1.15) rotate(55deg);
+    opacity: 0.9;
+  }
+  100% {
+    /* Dispersing to clear */
+    transform: translate(calc(var(--tx, 0px) * 1.45), calc(var(--ty, 0px) * 1.45)) scale(0) rotate(90deg);
+    opacity: 0;
+  }
+}
+
+.animate-sparkle {
+  animation: sparkleRadiate 0.48s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+/* Authentic Drop7 Block State Transition (Crack & Break):
+   The circle grows a little like a normal pop, but during the grow
+   it wiggles to the right, then to the left, and at the peak (50%)
+   changes to the new state, then shrinks down to normal size.
+*/
+@keyframes blockStateTransition {
+  0% {
+    transform: scale(1) translateX(0);
+  }
+  20% {
+    /* Swells up and wiggles to the right */
+    transform: scale(1.15) translateX(4.5px);
+  }
+  38% {
+    /* Swells more and wiggles to the left */
+    transform: scale(1.22) translateX(-4px);
+  }
+  48% {
+    /* Peak of expansion, centered */
+    transform: scale(1.25) translateX(0);
+  }
+  50% {
+    /* Transformation peak: changes to new state */
+    transform: scale(1.25) translateX(0);
+  }
+  75% {
+    /* Shrinking down towards normal size */
+    transform: scale(1.08) translateX(0);
+  }
+  90% {
+    /* Gentle settling bounce */
+    transform: scale(0.98) translateX(0);
+  }
+  100% {
+    /* Settled at normal size */
+    transform: scale(1) translateX(0);
+  }
+}
+
+.animate-block-transition,
+.animate-block-crack-transition,
+.animate-block-break-transition {
+  animation: blockStateTransition 0.46s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: transform;
+}
+
+/* Old state is visible while growing and wiggling (0% -> 48%), then hides at peak */
+@keyframes blockPhaseOld {
+  0%, 48% {
+    opacity: 1;
+    visibility: visible;
+  }
+  49%, 100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* New state appears at the peak (49%) and remains visible while shrinking down */
+@keyframes blockPhaseNew {
+  0%, 48% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  49%, 100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.animate-phase-old {
+  animation: blockPhaseOld 0.46s steps(1) forwards;
+  will-change: opacity, visibility;
+}
+
+.animate-phase-new {
+  animation: blockPhaseNew 0.46s steps(1) forwards;
+  will-change: opacity, visibility;
+}
+
+/* Gravitational downward fall animation from launcher track into column */
+@keyframes dropDownColumn {
+  0% {
+    transform: translate(-50%, -100%);
+  }
+  100% {
+    transform: translate(-50%, calc(var(--target-row-visual, 0) * 100%));
+  }
+}
+
+.animate-falling-disc {
+  animation: dropDownColumn var(--fall-dur, 200ms) cubic-bezier(0.4, 0.05, 0.85, 0.2) forwards;
+  will-change: transform;
+}
+
+/* Mobile notch / S26 safe areas */
+.safe-padding-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-padding-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
